@@ -1,0 +1,2 @@
+module KartsHelper
+end
