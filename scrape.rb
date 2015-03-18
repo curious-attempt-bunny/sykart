@@ -16,10 +16,10 @@ class Hash
   end
 end
 
-existing_races_response = `curl -H "Accept: application/json" -H "X-Query-Key: #{ENV['INSIGHTS_QUERY_KEY']}" "https://insights-api.newrelic.com/v1/accounts/929577/query?nrql=SELECT%20uniques(race_id)%20from%20RaceDataTest3%20since%201%20day%20ago%20limit%20100"`
+existing_races_response = `curl -H "Accept: application/json" -H "X-Query-Key: #{ENV['INSIGHTS_QUERY_KEY']}" "https://insights-api.newrelic.com/v1/accounts/929577/query?nrql=SELECT%20uniques(race_id)%20from%20RaceDataTest3%20since%202%20days%20ago%20limit%20100"`
 existing_races = Set.new(JSON.parse(existing_races_response)['results'].first['members'].map { |f| f.to_i })
 
-races_list_url = URI('http://sirtigard.clubspeedtiming.com/api/index.php/races/since.json?&date=2015-03-17&limit=200&key=cs-dev')
+races_list_url = URI("http://sirtigard.clubspeedtiming.com/api/index.php/races/since.json?&date=#{(DateTime.now - 1).to_s[0..9]}&limit=200&key=cs-dev")
 races_list_response = Net::HTTP.get(races_list_url)
 
 races = JSON.parse(races_list_response)['races']
