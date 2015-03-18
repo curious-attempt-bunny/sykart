@@ -36,8 +36,9 @@ races.each do |race|
 
   events = []
   race['racers'].each do |racer|
-    next unless racer['laps'] && racer['laps'].size > 1
-    racer['laps'][1..-1].each do |lap|
+    next unless racer['laps']
+    racer['laps'].each do |lap|
+      next if lap["lap_time"].to_i == 0
       event = race.except('id', 'racers', 'laps', 'track', 'starts_at')
       event['timestamp'] = DateTime.parse(race['starts_at']).to_time.to_f
       event['race_id'] = race['id']
