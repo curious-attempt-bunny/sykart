@@ -29,5 +29,7 @@ class RacesController < ApplicationController
     @racers_by_hp = {}
     @racers_by_hp[6.5] = @race["racers"].select { |racer| racer["kart_number"].to_i < 20 }
     @racers_by_hp[9] = @race["racers"].select { |racer| racer["kart_number"].to_i >= 20 }
+
+    @racers = @race["racers"]
   end
 end

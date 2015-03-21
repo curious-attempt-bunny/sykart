@@ -1,39 +1,45 @@
 <h1>Last race data</h1>
 
-<div style="float: left;">
-  <% [9, 6.5].each do |hp| %>
-    <% racers = @racers_by_hp[hp] %>
-    <% next if racers.empty? %>
-    <div style="display: inline-block;">
-      <h1><%= hp %>hp Karts</h1>
-      <table style="width:<%= 50 + racers.size * 100 %>px; table-layout: fixed;border-spacing:0px 2px;">
-        <tr>
-          <th style="width: 50px;">Lap#</th>
-          <% racers.each_with_index do |racer, i| %>
-            <th style="width: 100px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">#<%= i + 1 %><br><%= racer["nickname"] %></th>
-          <% end %>
-        </tr>
-        <% max_laps = racers.map { |racer| racer['laps'].size }.max %>
-        <% (1...max_laps).each do |lap_index| %>
-          <tr style="<%= 'background-color:#ccc' if lap_index.even? %>">
-            <td style="text-align:right;"><%= lap_index %></td>
-            <% racers.each_with_index do |racer, i| %>
-              <% laps = racer["laps"] %>
-                <% if lap_index < laps.size %>
-                  <td style="text-align:center;">
-                    <%= sprintf("%2.3f", laps[lap_index]["lap_time"].to_f) %>
-                  </td>
-                <% else %>
-                  <td></td>
-                <% end %>
+<div style="display: inline-block;">
+  <table style="width:<%= 50 + 50 + @racers.size * 100 %>px; table-layout: fixed;border-spacing:0px 2px;">
+    <tr>
+      <th style="width: 50px;">Nick</th>
+      <% @racers.each_with_index do |racer, i| %>
+        <th style="width: 100px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+          <%= racer["nickname"] %>
+        </th>
+      <% end %>
+    </tr>
+    <tr>
+      <th style="width: 50px;">Kart</th>
+      <% @racers.each_with_index do |racer, i| %>
+        <th style="width: 100px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+          <%= racer["kart_number"] %> <%= '(9hp)' if racer["kart_number"].to_i >= 20 %>
+        </th>
+      <% end %>
+    </tr>
+    <tr>
+    <th>Lap</th>
+    </tr>
+    <% max_laps = @racers.map { |racer| racer['laps'].size }.max %>
+    <% (1...max_laps).each do |lap_index| %>
+      <tr style="<%= 'background-color:#ccc' if lap_index.even? %>">
+        <td style="text-align:right;"><%= lap_index %></td>
+        <% @racers.each_with_index do |racer, i| %>
+          <% laps = racer["laps"] %>
+            <% if lap_index < laps.size %>
+              <td style="text-align:center;">
+                <%= sprintf("%2.3f", laps[lap_index]["lap_time"].to_f) %>
+              </td>
+            <% else %>
+              <td></td>
             <% end %>
-          </tr>
         <% end %>
-      </table>
-    </div>
-  <% end %>
+      </tr>
+    <% end %>
+  </table>
 </div>
-<div style="float: left;">
+<div>
   <ul>
     <% @races.each do |race| %>
       <li><a href='/races/<%= race['race_id'] %>'><%= race['finish_time'].strftime("%a %I:%M %p") %><a></li>
