@@ -24,10 +24,10 @@ class RacesController < ApplicationController
       racer["laps"].reject! { |lap| lap["lap_time"].to_f.zero? }.
           each { |lap| lap["lap_time"] = lap["lap_time"].to_f }
       racer["average"] = racer["laps"].map { |lap| lap["lap_time"] }.sum / racer["laps"].size
-      racer["best"] = racer["laps"].map { |lap| lap["lap_time"] }.max
+      racer["best"] = racer["laps"].map { |lap| lap["lap_time"] }.min
     end
 
-    @race["racers"].sort_by! { |racer| racer["average"] }
+    @race["racers"].sort_by! { |racer| racer["best"] }
 
     @racers = @race["racers"]
 
