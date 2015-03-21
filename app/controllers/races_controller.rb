@@ -15,21 +15,35 @@ class RacesController < ApplicationController
       race_id = @races.max_by { |race| race["finish_time"] }['race_id']
     end
 
-    race_url = URI("http://sirtigard.clubspeedtiming.com/api/index.php/races/#{race_id}.json?key=cs-dev")
-    race_response = Net::HTTP.get(race_url)
+    url = "http://sirtigard.clubspeedtiming.com/api/index.php/races/#{race_id}.json?key=cs-dev"
+    race_response = Rails.cache.fetch(url, expires_in: 1.hour) do
+      race_url = URI(url)
+      Net::HTTP.get(race_url)
+    end
 
     @race = JSON.parse(race_response)['race']
 
-    @race["racers"].each do |racer|
+    @racers = @race["racers"]
+
+    @racers.reject! { |racer| racer["laps"].nil? }
+
+    @racers.each do |racer|
       racer["laps"].reject! { |lap| lap["lap_time"].to_f.zero? }.
           each { |lap| lap["lap_time"] = lap["lap_time"].to_f }
       racer["average"] = racer["laps"].map { |lap| lap["lap_time"] }.sum / racer["laps"].size
       racer["best"] = racer["laps"].map { |lap| lap["lap_time"] }.min
     end
 
-    @race["racers"].sort_by! { |racer| racer["best"] }
+    @racers.sort_by! { |racer| racer["best"] }
 
-    @racers = @race["racers"]
+    normal_karts = @racers.select { |racer| racer['kart_number'].to_i < 20}
+    fast_karts = @racers.select { |racer| racer['kart_number'].to_i >= 20}
+
+    @best_averages = [normal_karts.map { |racers| racers["average"] }.min,
+                      fast_karts.map { |racers| racers["average"] }.min]
+    @best_bests = [normal_karts.map { |racers| racers["best"] }.min,
+                      fast_karts.map { |racers| racers["best"] }.min]
+
 
   end
 end

@@ -47,13 +47,17 @@
     <tr>
       <th>Best</th>
       <% @racers.each do |racer| %>
-        <td style="text-align:center;;font-size:1.5em;"><%= sprintf("%2.3f", racer["best"]) %></td>
+        <td style="text-align:center;;font-size:1.5em;">
+          <span style="<%= 'background-color:#000;color:#fff;padding-left:0.5em;padding-right:0.5em;' if @best_bests.include?(racer["best"])%>"><%= sprintf("%2.3f", racer["best"]) %></span>
+        </td>
       <% end %>
     </tr>
     <tr>
       <th>Average</th>
       <% @racers.each do |racer| %>
-        <td style="text-align:center;;font-size:1.5em;"><%= sprintf("%2.3f", racer["average"]) %></td>
+        <td style="text-align:center;;font-size:1.5em;">
+          <span style="<%= 'background-color:#000;color:#fff;padding-left:0.5em;padding-right:0.5em;' if @best_averages.include?(racer["average"])%>"><%= sprintf("%2.3f", racer["average"]) %></span>
+        </td>
       <% end %>
     </tr>
   </table>
@@ -65,3 +69,8 @@
     <% end %>
   </ul>
 </div>
+<script type="text/javascript">
+  setTimeout(function() {
+    window.location.reload()
+  }, 5000);
+</script>
