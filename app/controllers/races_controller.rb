@@ -20,16 +20,16 @@ class RacesController < ApplicationController
 
     @race = JSON.parse(race_response)['race']
 
-    @race["racers"].sort_by! do |racer|
-      racer["laps"].reject { |lap| lap["lap_time"].to_f.zero? }.
-          map { |lap| lap["lap_time"].to_f }.
-          min
+    @race["racers"].each do |racer|
+      racer["laps"].reject! { |lap| lap["lap_time"].to_f.zero? }.
+          each { |lap| lap["lap_time"] = lap["lap_time"].to_f }
+      racer["average"] = racer["laps"].map { |lap| lap["lap_time"] }.sum / racer["laps"].size
+      racer["best"] = racer["laps"].map { |lap| lap["lap_time"] }.max
     end
 
-    @racers_by_hp = {}
-    @racers_by_hp[6.5] = @race["racers"].select { |racer| racer["kart_number"].to_i < 20 }
-    @racers_by_hp[9] = @race["racers"].select { |racer| racer["kart_number"].to_i >= 20 }
+    @race["racers"].sort_by! { |racer| racer["average"] }
 
     @racers = @race["racers"]
+
   end
 end

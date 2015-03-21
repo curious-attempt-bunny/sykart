@@ -6,7 +6,12 @@
       <th style="width: 50px;">Nick</th>
       <% @racers.each_with_index do |racer, i| %>
         <th style="width: 100px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-          <%= racer["nickname"] %>
+          <% if racer["nickname"].ends_with?("GT9") %>
+            <span style="vertical-align: super;font-size: 0.5em;">GT9</span>
+            <%= racer["nickname"][0..-"GT9".length] %>
+          <% else %>
+            <%= racer["nickname"] %>
+          <% end %>
         </th>
       <% end %>
     </tr>
