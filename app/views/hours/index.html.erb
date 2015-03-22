@@ -1,0 +1,25 @@
+<div style="margin-left:auto; margin-right:auto; width: <%= 3*12 %>em;">
+  <h1>When are the busiest hours?</h1>
+  <table>
+    <tr>
+      <th></th>
+      <% (11..23).each do |hour| %>
+        <th><%= sprintf("%2d:00", hour) %></th>
+      <% end %>
+    </tr>
+    <% ((1..6).to_a + [0]).each do |day| %>
+      <tr>
+        <th><%= Time::RFC2822_DAY_NAME[day] %></th>
+        <% (11..23).each do |hour| %>
+          <% if @day[day][hour] > 0 %>
+            <% color = sprintf("#f%x%x", 15-[(@day[day][hour]/4.0).ceil, 15].min, 15-[(@day[day][hour]/4.0).ceil, 15].min) %>
+            <td style="background-color:<%= color %>;text-align:center;"><span><%= @day[day][hour].ceil %></span></td>
+          <% else %>
+            <td></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+  <p>This shows the average number of people in races for each hour of each day for the past week.</p>
+</div>
