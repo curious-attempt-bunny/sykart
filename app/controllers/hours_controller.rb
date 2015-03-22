@@ -4,7 +4,8 @@ class HoursController < ApplicationController
     @races = JSON.parse(races_response)
 
     @day = Hash.new { |h,k| h[k] = Hash.new { |h,k| h[k] = Hash.new { |h,k| h[k] = 0 } } }
-    @people = Hash.new { |h,k| h[k] = Hash.new { |h,k| h[k] = 1000 } }
+    @min = Hash.new { |h,k| h[k] = Hash.new { |h,k| h[k] = 1000 } }
+    @max = Hash.new { |h,k| h[k] = Hash.new { |h,k| h[k] = 0 } }
 
     @races["facets"].each do |race|
       racers = race["results"][0]["uniqueCount"]
@@ -14,7 +15,8 @@ class HoursController < ApplicationController
       offset = start_time
       duration.times {
         @day[offset.wday][offset.hour][offset.min] += racers
-        @people[offset.wday][offset.hour] = [@people[offset.wday][offset.hour], racers].min
+        @min[offset.wday][offset.hour] = [@min[offset.wday][offset.hour], racers].min
+        @max[offset.wday][offset.hour] = [@max[offset.wday][offset.hour], racers].max
         offset += 1.minute
       }
     end

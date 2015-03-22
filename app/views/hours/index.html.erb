@@ -1,11 +1,14 @@
-<div style="margin-left:auto; margin-right:auto; width: <%= 3*12 %>em;">
+<div style="margin-left:auto; margin-right:auto; width: <%= 7*12 %>em;">
   <h1>When are the busiest hours?</h1>
-  <p>The busiest hours are in dark red. The number shows how many people were in the smallest racing group.</p>
   <table>
     <tr>
       <th></th>
+      <th colspan="12">The number of karts in races</th>
+    </tr>
+    <tr>
+      <th></th>
       <% (11..23).each do |hour| %>
-        <th><%= sprintf("%2d:00", hour) %></th>
+        <th style="width: 5em;"><%= sprintf("%2d:00", hour) %></th>
       <% end %>
     </tr>
     <% ((1..6).to_a + [0]).each do |day| %>
@@ -17,14 +20,15 @@
             <% scale_max = 60.0 %>
             <% scaled = [(15 * (minutes / scale_max)).ceil.to_i, 15].min %>
             <% color = sprintf("#f%x%x", 15-scaled, 15-scaled) %>
-            <td style="background-color:<%= color %>;text-align:center;">
-              <span><%= @people[day][hour] %></span>
+            <td style="background-color:<%= color %>;text-align:center;height:2em;">
+              <span><%= @min[day][hour] %><%= '+' if @min[day][hour] != @max[day][hour] %> kart<%= 's' if @max[day][hour] > 1 %></span>
             </td>
           <% else %>
-            <td></td>
+            <td style="height:2em;"></td>
           <% end %>
         <% end %>
       </tr>
     <% end %>
   </table>
+  <p>The busiest hours are in dark red. The lower the number of karts the more likely you are to get a race.</p>
 </div>
