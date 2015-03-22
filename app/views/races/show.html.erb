@@ -17,7 +17,7 @@
       <th style="width: 50px;text-align:right;">Kart</th>
       <% @racers.each_with_index do |racer, i| %>
         <th style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-          <%= racer["kart_number"] %> <%= '(9hp)' if racer["kart_number"].to_i >= 20 %>
+          <%= racer["kart_number"] %> (<%= racer["hp"] %>hp)
         </th>
       <% end %>
     </tr>

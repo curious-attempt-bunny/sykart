@@ -32,18 +32,23 @@ class RacesController < ApplicationController
           each { |lap| lap["lap_time"] = lap["lap_time"].to_f }
       racer["average"] = racer["laps"].map { |lap| lap["lap_time"] }.sum / racer["laps"].size
       racer["best"] = racer["laps"].map { |lap| lap["lap_time"] }.min
+      racer["hp"] = "9"
+      racer["hp"] = "6.5" if racer['kart_number'].to_i < 20
+      racer["hp"] = "4" if racer['kart_number'].to_i >= 40
     end
 
     @racers.sort_by! { |racer| racer["best"] }
 
+    kids_karts = @racers.select { |racer| racer['kart_number'].to_i >= 40}
     normal_karts = @racers.select { |racer| racer['kart_number'].to_i < 20}
-    fast_karts = @racers.select { |racer| racer['kart_number'].to_i >= 20}
+    fast_karts = @racers.select { |racer| racer['kart_number'].to_i >= 20 && racer['kart_number'].to_i < 40 }
 
-    @best_averages = [normal_karts.map { |racers| racers["average"] }.min,
-                      fast_karts.map { |racers| racers["average"] }.min]
-    @best_bests = [normal_karts.map { |racers| racers["best"] }.min,
-                      fast_karts.map { |racers| racers["best"] }.min]
+    @best_averages = [kids_karts, normal_karts, fast_karts].map do |karts|
+      karts.map { |racers| racers["average"] }.min
+    end
 
-
+    @best_bests = [kids_karts, normal_karts, fast_karts].map do |karts|
+      karts.map { |racers| racers["best"] }.min
+    end
   end
 end
