@@ -7,7 +7,8 @@ class HoursController < ApplicationController
 
     @races["facets"].each do |race|
       racers = race["results"][0]["uniqueCount"]
-      start_time = Time.at(race["results"][1]["average"]/1000) + 7.hours
+      start_time = Time.at(race["results"][1]["average"]/1000).
+        in_time_zone('Pacific Time (US & Canada)') + 7.hours
       @day[start_time.wday][start_time.hour] += racers
       puts "#{start_time.wday} #{start_time.hour} -> #{racers} #{@day[start_time.wday][start_time.hour]}"
     end
