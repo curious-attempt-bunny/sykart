@@ -5,11 +5,19 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <style type="text/css">
+    #nav a {
+      text-decoration: none;
+    }
+    #nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
-<div style="position:absolute; top: 0; right:0; padding: 0.5em 1em;">
-  <a href="/races/latest">Race results</a> | <a href="/karts">Kart performance</a> | <a href="/hours">When is busy?</a>
+<div style="position:absolute; top: 0; right:0; padding: 0.5em 1em;" id="nav">
+  <a href="/races/latest">Race results</a> | <a href="/hours">When is busy?</a> | <a href="/competetive">When do drivers get the best times?</a> | <a href="/karts">Which karts are best?</a>
 </div>
 
 <%= yield %>

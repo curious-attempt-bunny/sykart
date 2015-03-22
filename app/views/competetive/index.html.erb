@@ -1,0 +1,33 @@
+<div style="margin-left:auto; margin-right:auto; width: <%= 8*12 %>em;font-family:monospace">
+  <h1>When do drivers get the best times?</h1>
+  <table>
+    <tr>
+      <th></th>
+      <th colspan="12">The best 6.5hp kart lap times</th>
+    </tr>
+    <tr>
+      <th></th>
+      <% (11..23).each do |hour| %>
+        <th style="width: 7em;"><%= sprintf("%2d:00", hour) %></th>
+      <% end %>
+    </tr>
+    <% ((1..6).to_a + [0]).each do |day| %>
+      <tr>
+        <th><%= Time::RFC2822_DAY_NAME[day] %></th>
+        <% (11..23).each do |hour| %>
+          <% lap_time = @min[day][hour] %>
+          <% if lap_time < 1000 %>
+            <% index = 15 %>
+            <% @scales.each_with_index { |scale, i| index = i and break if @scales[i] > lap_time } %>
+            <% color = sprintf("#f%x%x", index, index) %>
+            <td style="text-align:center;height:2em;font-size:1.5em;background-color:<%= color %>;">
+              <span><%= sprintf("%2.3f", @min[day][hour]) %></span>
+            </td>
+          <% else %>
+            <td style="height:2em;"></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+</div>
