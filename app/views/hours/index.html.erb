@@ -1,5 +1,6 @@
 <div style="margin-left:auto; margin-right:auto; width: <%= 3*12 %>em;">
   <h1>When are the busiest hours?</h1>
+  <p>The busiest hours are in dark red. The number shows how many people were in the smallest racing group.</p>
   <table>
     <tr>
       <th></th>
@@ -11,9 +12,14 @@
       <tr>
         <th><%= Time::RFC2822_DAY_NAME[day] %></th>
         <% (11..23).each do |hour| %>
-          <% if @day[day][hour] > 0 %>
-            <% color = sprintf("#f%x%x", 15-[(@day[day][hour]/4.0).ceil, 15].min, 15-[(@day[day][hour]/4.0).ceil, 15].min) %>
-            <td style="background-color:<%= color %>;text-align:center;"><span><%= @day[day][hour].ceil %></span></td>
+          <% minutes = (@day[day][hour].values.sum / 12).ceil.to_i %>
+          <% if minutes > 0 %>
+            <% scale_max = 60.0 %>
+            <% scaled = [(15 * (minutes / scale_max)).ceil.to_i, 15].min %>
+            <% color = sprintf("#f%x%x", 15-scaled, 15-scaled) %>
+            <td style="background-color:<%= color %>;text-align:center;">
+              <span><%= @people[day][hour] %></span>
+            </td>
           <% else %>
             <td></td>
           <% end %>
@@ -21,5 +27,4 @@
       </tr>
     <% end %>
   </table>
-  <p>This shows the average number of people in races for each hour of each day for the past week.</p>
 </div>
