@@ -25,12 +25,10 @@ class RacesController < ApplicationController
 
     @racers = @race["racers"]
 
-    @racers.reject! { |racer| racer["laps"].nil? }
-
     @racers.each do |racer|
       racer["laps"].reject! { |lap| lap["lap_time"].to_f.zero? }.
           each { |lap| lap["lap_time"] = lap["lap_time"].to_f }
-      racer["average"] = racer["laps"].map { |lap| lap["lap_time"] }.sum / racer["laps"].size
+      racer["average"] = racer["laps"].map { |lap| lap["lap_time"] }.sum / racer["laps"].size if racer["laps"].size > 0
       racer["best"] = racer["laps"].map { |lap| lap["lap_time"] }.min
       racer["hp"] = "9"
       racer["hp"] = "6.5" if racer['kart_number'].to_i < 20
@@ -47,17 +45,22 @@ class RacesController < ApplicationController
         kart_max = 40
       end
 
-      races_response = `curl -H "Accept: application/json" -H "X-Query-Key: #{ENV['INSIGHTS_QUERY_KEY']}" "https://insights-api.newrelic.com/v1/accounts/929577/query?nrql=SELECT%20min(lap_time)%20from%20RaceDataTest3%20where%20kart_number%20%3E%20#{kart_min}%20and%20kart_number%20%3C%20#{kart_max}%20and%20lap_time%20%3E%200%20and%20racer_id%20%3D%20#{racer['id'].to_i}%20facet%20race_id%20since%2012%20months%20ago%20limit%201000"`
-      races = JSON.parse(races_response)
+      url = "https://insights-api.newrelic.com/v1/accounts/929577/query?nrql=SELECT%20min(lap_time)%20from%20RaceDataTest3%20where%20kart_number%20%3E%20#{kart_min}%20and%20kart_number%20%3C%20#{kart_max}%20and%20lap_time%20%3E%200%20and%20racer_id%20%3D%20#{racer['id'].to_i}%20facet%20race_id%20since%2012%20months%20ago%20limit%201000"
 
-      times = races["facets"].map { |race| race["results"][0]["min"] }
+      times = Rails.cache.fetch(url, expires_in: 10.minutes) do
+        races_response = `curl -H "Accept: application/json" -H "X-Query-Key: #{ENV['INSIGHTS_QUERY_KEY']}" "#{url}"`
+        races = JSON.parse(races_response)
+
+        races["facets"].map { |race| race["results"][0]["min"] }.sort!
+      end
 
       times << racer['best'] unless times.include?(racer['best'])
-
       times.sort!
 
       racer["times"] = times
     end
+
+    @racers.reject! { |racer| racer["laps"].nil? || racer["laps"].empty? }
 
     @racers.sort_by! { |racer| racer["best"] }
 
