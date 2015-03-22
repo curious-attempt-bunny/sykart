@@ -1,4 +1,6 @@
 <% racer_width = 120 %>
+<% racer_width = 100 if @racers.size >= 10 %>
+<% racer_width = 150 if @racers.size < 6 %>
 <% table_width = 50 + @racers.size * racer_width %>
 <% best_colors = ["#700000", "#000070", "#6B0070"] %>
 <% best_colors_hp = { "6.5" => best_colors[0], "9" => best_colors[1], "4" => best_colors[2] } %>
