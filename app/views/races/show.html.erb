@@ -70,11 +70,19 @@
 </div>
 <script type="text/javascript">
   if (window.location.pathname == "/races/latest") {
-    setInterval(function() {
+    var checkForUpdate = function() {
       var hours = new Date().getHours()
       if (hours >= 10 && hours <= 24) {
-        window.location.reload()
+        $.get("/races/<%= @race['id'] %>/most_recent", function(data) {
+          if (data != true) {
+            window.location.reload();
+          }
+        }).always(function() {
+          setTimeout(checkForUpdate, 10000);
+        });
       }
-    }, 5000);
+    }
+
+    setTimeout(checkForUpdate, 5000);
   }
 </script>
