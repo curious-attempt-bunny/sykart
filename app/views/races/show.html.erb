@@ -66,6 +66,33 @@
         </td>
       <% end %>
     </tr>
+    <tr>
+      <td colspan="<%= 1+@racers.size%>" style="border-top: 1px solid black;"><span/></td>
+    </tr>
+    <tr>
+      <th>Personal</th>
+    </tr>
+    <tr>
+      <th>Rank</th>
+      <% @racers.each do |racer| %>
+        <% index = racer['times'].index(racer['best']) %>
+        <td style="text-align:center;"><span><%= (index+1).ordinalize %> of <%= racer['times'].size %></span></td>
+      <% end %>
+    </tr>
+    <% 5.times do |index| %>
+      <tr>
+        <th>
+          <%= "Times" if index == 0 %>
+        </th>
+        <% @racers.each do |racer| %>
+          <td style="text-align:center;;font-size:1.5em;">
+            <% if index < racer['times'].size %>
+              <span style="<%= "background-color:#{best_colors_hp[racer['hp']]};color:#fff;padding-left:0.5em;padding-right:0.5em;" if racer['best'] == racer['times'][index] %>"><%= sprintf("%2.3f", racer['times'][index]) %></span>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
   </table>
 </div>
 <script type="text/javascript">
