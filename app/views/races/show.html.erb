@@ -1,7 +1,8 @@
-<h1>Race from <%= time_ago_in_words(DateTime.parse(@race['starts_at'])) %> ago</h1>
-<div style="display: inline-block;font-family:monospace;">
-  <% racer_width = 120 %>
-  <table style="width:<%= 50 + @racers.size * racer_width %>px; table-layout: fixed;border-spacing:0px 2px;">
+<% racer_width = 120 %>
+<% table_width = 50 + @racers.size * racer_width %>
+<div style="margin-left:auto;margin-right:auto;font-family:monospace;width:<%= table_width %>px;">
+  <h1>Race from <%= time_ago_in_words(DateTime.parse(@race['starts_at'])) %> ago</h1>
+  <table style="width:<%= table_width %>px; table-layout: fixed;border-spacing:0px 2px;">
     <tr>
       <th style="width: 50px;text-align:right;">Nick</th>
       <% @racers.each_with_index do |racer, i| %>
