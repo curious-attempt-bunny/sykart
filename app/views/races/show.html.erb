@@ -1,3 +1,4 @@
+<h1>Race from <%= time_ago_in_words(DateTime.parse(@race['starts_at'])) %> ago</h1>
 <div style="display: inline-block;font-family:monospace;">
   <% racer_width = 120 %>
   <table style="width:<%= 50 + @racers.size * racer_width %>px; table-layout: fixed;border-spacing:0px 2px;">
@@ -62,17 +63,13 @@
     </tr>
   </table>
 </div>
-<div>
-  <ul>
-    <% @races.each do |race| %>
-      <li><a href='/races/<%= race['race_id'] %>'><%= race['finish_time'].strftime("%a %I:%M %p") %><a></li>
-    <% end %>
-  </ul>
-</div>
 <script type="text/javascript">
   if (window.location.pathname == "/races/latest") {
-    setTimeout(function() {
-      window.location.reload()
+    setInterval(function() {
+      var hours = new Date().getHours()
+      if (hours >= 10 && hours <= 24) {
+        window.location.reload()
+      }
     }, 5000);
   }
 </script>
