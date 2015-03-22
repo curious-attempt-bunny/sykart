@@ -43,11 +43,11 @@ class RacesController < ApplicationController
     normal_karts = @racers.select { |racer| racer['kart_number'].to_i < 20}
     fast_karts = @racers.select { |racer| racer['kart_number'].to_i >= 20 && racer['kart_number'].to_i < 40 }
 
-    @best_averages = [kids_karts, normal_karts, fast_karts].map do |karts|
+    @best_averages = [normal_karts, fast_karts, kids_karts].map do |karts|
       karts.map { |racers| racers["average"] }.min
     end
 
-    @best_bests = [kids_karts, normal_karts, fast_karts].map do |karts|
+    @best_bests = [normal_karts, fast_karts, kids_karts].map do |karts|
       karts.map { |racers| racers["best"] }.min
     end
   end

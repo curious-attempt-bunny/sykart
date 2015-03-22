@@ -1,5 +1,7 @@
 <% racer_width = 120 %>
 <% table_width = 50 + @racers.size * racer_width %>
+<% best_colors = ["#700000", "#000070", "#6B0070"] %>
+<% best_colors_hp = { "6.5" => best_colors[0], "9" => best_colors[1], "4" => best_colors[2] } %>
 <div style="margin-left:auto;margin-right:auto;font-family:monospace;width:<%= table_width %>px;">
   <h1>Race from <%= time_ago_in_words(DateTime.parse(@race['starts_at'])) %> ago</h1>
   <table style="width:<%= table_width %>px; table-layout: fixed;border-spacing:0px 2px;">
@@ -35,7 +37,7 @@
             <% if lap_index < laps.size %>
               <% time = laps[lap_index]["lap_time"] %>
               <td style="text-align:center;font-size:1.5em;">
-                <span style="<%= 'background-color:#000;color:#fff;padding-left:0.5em;padding-right:0.5em;' if time == racer['best']%>"><%= sprintf("%2.3f", time) %></span>
+                <span style="<%= "background-color:#{best_colors_hp[racer['hp']]};color:#fff;padding-left:0.5em;padding-right:0.5em;" if time == racer['best']%>"><%= sprintf("%2.3f", time) %></span>
               </td>
             <% else %>
               <td></td>
@@ -49,8 +51,8 @@
     <tr>
       <th>Best</th>
       <% @racers.each do |racer| %>
-        <td style="text-align:center;;font-size:1.5em;">
-          <span style="<%= 'background-color:#000;color:#fff;padding-left:0.5em;padding-right:0.5em;' if @best_bests.include?(racer["best"])%>"><%= sprintf("%2.3f", racer["best"]) %></span>
+        <td style="text-align:center;font-size:1.5em;">
+          <span style="<%= "background-color:#{best_colors[@best_bests.index(racer["best"])]};color:#fff;padding-left:0.5em;padding-right:0.5em;" if @best_bests.include?(racer["best"])%>"><%= sprintf("%2.3f", racer["best"]) %></span>
         </td>
       <% end %>
     </tr>
@@ -58,7 +60,7 @@
       <th>Average</th>
       <% @racers.each do |racer| %>
         <td style="text-align:center;;font-size:1.5em;">
-          <span style="<%= 'background-color:#000;color:#fff;padding-left:0.5em;padding-right:0.5em;' if @best_averages.include?(racer["average"])%>"><%= sprintf("%2.3f", racer["average"]) %></span>
+          <span style="<%= "background-color:#{best_colors[@best_averages.index(racer["average"])]};color:#fff;padding-left:0.5em;padding-right:0.5em;" if @best_averages.include?(racer["average"])%>"><%= sprintf("%2.3f", racer["average"]) %></span>
         </td>
       <% end %>
     </tr>
