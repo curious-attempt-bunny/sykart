@@ -1,3 +1,27 @@
 // Place all the styles related to the Races controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+table { table-layout: fixed; }
+table th, table td { overflow: hidden; }
+.hp-4-bg {
+  background-color: #6B0070;
+}
+.hp-6-5-bg {
+  background-color: #700000;
+}
+.hp-9-bg {
+  background-color: #000070;
+}
+.hp-4-fg {
+  color: #6B0070;
+  font-weight: bold;
+}
+.hp-6-5-fg {
+  color: #700000;
+  font-weight: bold;
+}
+.hp-9-fg {
+  color: #000070;
+  font-weight: bold;
+}
