@@ -1,10 +1,18 @@
+<% table_min_width = 28 + ((670-28)/12) * @racers.size %>
+<% table_max_width = 28 + 2.5*((670-28)/12) * @racers.size %>
+
+<% lap_width = 100 * 28 / table_min_width %>
+<% racer_width = (100-lap_width)/@racers.size %>
+
+<div class="container" style="min-width: <%= table_min_width %>px;max-width: <%= table_max_width %>px;">
+
 <div id="race-data" class="table-responsive">
+  <h3><%= DateTime.parse(@race['starts_at']).strftime("%l:%M%P") %> race</h3>
   <h4>Lap times</h4>
-  <table class="table table-condensed table-striped">
+  <table class="table table-condensed table-striped" style="min-width: <%= table_min_width %>px;max-width: <%= table_max_width %>px;">
     <thead>
       <tr>
-        <th style="width: 5%;">#</th>
-        <% racer_width = (100-5)/@racers.size %>
+        <th style="width: <%= lap_width %>%;">#</th>
         <% @racers.each_with_index do |racer, i| %>
           <th style="width: <%= racer_width %>%;" class="nickname <%= "hp.#{racer["hp"]}.fg".gsub(/\./, '-') %>">
             <% if racer["nickname"].ends_with?("GT9") %>
@@ -38,11 +46,10 @@
   </table>
 
   <h4>Average times</h4>
-  <table class="table table-condensed table-striped">
+  <table class="table table-condensed table-striped" style="min-width: <%= table_min_width %>px;max-width: <%= table_max_width %>px;">
     <thead>
       <tr>
-        <th style="width: 5%;"></th>
-        <% racer_width = (100-5)/@racers.size %>
+        <th style="width: <%= lap_width %>%;"></th>
         <% @racers.each_with_index do |racer, i| %>
           <th style="width: <%= racer_width %>%;" class="nickname <%= "hp.#{racer["hp"]}.fg".gsub(/\./, '-') %>">
             <% if racer["nickname"].ends_with?("GT9") %>
@@ -67,11 +74,10 @@
   </table>
 
   <h4>Personal best times</h4>
-  <table class="table table-condensed table-striped">
+  <table class="table table-condensed table-striped" style="min-width: <%= table_min_width %>px;max-width: <%= table_max_width %>px;">
     <thead>
       <tr>
-        <th style="width: 5%;">Rank</th>
-        <% racer_width = (100-5)/@racers.size %>
+        <th style="width: <%= lap_width %>%;">Rank</th>
         <% @racers.each_with_index do |racer, i| %>
           <th style="width: <%= racer_width %>%;" class="nickname <%= "hp.#{racer["hp"]}.fg".gsub(/\./, '-') %>">
             <% if racer["nickname"].ends_with?("GT9") %>
@@ -98,6 +104,8 @@
       <% end %>
     </tbody>
   </table>
+</div>
+
 </div>
 
 <script type="text/javascript">
