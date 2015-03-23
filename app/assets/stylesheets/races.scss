@@ -2,8 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-table { table-layout: fixed; }
-table th, table td { overflow: hidden; }
+#race-data {
+  table {
+    table-layout: fixed;
+    min-width: 670px;
+  }
+}
+.nickname {
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+}
 .hp-4-bg {
   background-color: #6B0070;
 }

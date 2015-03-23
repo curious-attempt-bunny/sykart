@@ -1,4 +1,4 @@
-<div>
+<div id="race-data" class="table-responsive">
   <h4>Lap times</h4>
   <table class="table table-condensed table-striped">
     <thead>
@@ -6,7 +6,7 @@
         <th style="width: 5%;">#</th>
         <% racer_width = (100-5)/@racers.size %>
         <% @racers.each_with_index do |racer, i| %>
-          <th style="width: <%= racer_width %>%;" class="<%= "hp.#{racer["hp"]}.fg".gsub(/\./, '-') %>">
+          <th style="width: <%= racer_width %>%;" class="nickname <%= "hp.#{racer["hp"]}.fg".gsub(/\./, '-') %>">
             <% if racer["nickname"].ends_with?("GT9") %>
               <span><%= racer["nickname"][0..-" GT9".length] %></span>
             <% else %>
@@ -44,7 +44,7 @@
         <th style="width: 5%;"></th>
         <% racer_width = (100-5)/@racers.size %>
         <% @racers.each_with_index do |racer, i| %>
-          <th style="width: <%= racer_width %>%;" class="<%= "hp.#{racer["hp"]}.fg".gsub(/\./, '-') %>">
+          <th style="width: <%= racer_width %>%;" class="nickname <%= "hp.#{racer["hp"]}.fg".gsub(/\./, '-') %>">
             <% if racer["nickname"].ends_with?("GT9") %>
               <span><%= racer["nickname"][0..-" GT9".length] %></span>
             <% else %>
@@ -73,7 +73,7 @@
         <th style="width: 5%;">Rank</th>
         <% racer_width = (100-5)/@racers.size %>
         <% @racers.each_with_index do |racer, i| %>
-          <th style="width: <%= racer_width %>%;" class="<%= "hp.#{racer["hp"]}.fg".gsub(/\./, '-') %>">
+          <th style="width: <%= racer_width %>%;" class="nickname <%= "hp.#{racer["hp"]}.fg".gsub(/\./, '-') %>">
             <% if racer["nickname"].ends_with?("GT9") %>
               <span><%= racer["nickname"][0..-" GT9".length] %></span>
             <% else %>
