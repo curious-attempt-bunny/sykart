@@ -5,14 +5,7 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <style type="text/css">
-    #nav a {
-      text-decoration: none;
-    }
-    #nav a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -43,7 +36,9 @@
     });
   </script>
 
+  <div class="container">
 <%= yield %>
+  </div>
 
 </body>
 </html>
